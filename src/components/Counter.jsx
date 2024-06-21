@@ -1,24 +1,33 @@
-// src/components/Counter.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 const Counter = ({ finishGame }) => {
     const [count, setCount] = useState(0);
+    const buttonRef = useRef(null);
 
     useEffect(() => {
-        console.log('Component mounted or updated');
-        return () => {
-            console.log('Component will unmount');
+        const handleKeyPress = (event) => {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Hindari perilaku default (mis. submit form)
+                handleClick();
+            }
         };
-    }, [count]);
+
+        buttonRef.current.addEventListener('keydown', handleKeyPress);
+
+        return () => {
+            buttonRef.current.removeEventListener('keydown', handleKeyPress);
+        };
+    }, []);
 
     const handleClick = () => {
-        setCount(count + 1);
+        setCount((prevCount) => prevCount + 1);
     };
 
     return (
         <div>
             <h1 style={{ fontSize: '64px' }}>{count}</h1>
             <button
+                ref={buttonRef}
                 style={buttonStyle}
                 onClick={handleClick}
             >

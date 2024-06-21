@@ -1,7 +1,5 @@
-// src/components/App.jsx
 import React, { useState } from 'react';
 import Counter from './Counter';
-import GameOver from './GameOver';
 
 const App = () => {
     const [isGameOver, setIsGameOver] = useState(false);
@@ -10,9 +8,22 @@ const App = () => {
         setIsGameOver(true);
     };
 
+    const restartGame = () => {
+        setIsGameOver(false);
+    };
+
     return (
         <div style={styles.container}>
-            {isGameOver ? <GameOver /> : <Counter finishGame={finishGame} />}
+            {isGameOver ? (
+                <div>
+                    <h1>Game Over!</h1>
+                    <button onClick={restartGame} style={buttonStyle}>
+                        Restart Game
+                    </button>
+                </div>
+            ) : (
+                <Counter finishGame={finishGame} />
+            )}
         </div>
     );
 };
@@ -22,6 +33,16 @@ const styles = {
         textAlign: 'center',
         marginTop: '30px',
     },
+};
+
+const buttonStyle = {
+    fontSize: '24px',
+    width: '200px',
+    height: '48px',
+    borderRadius: '4px',
+    marginTop: '20px',
+    color: '#fff',
+    backgroundColor: '#66ccff',
 };
 
 export default App;
